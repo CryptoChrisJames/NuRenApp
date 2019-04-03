@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuRen.Services.Abstractions;
 
 namespace NuRenApp.Controllers
 {
@@ -12,11 +13,11 @@ namespace NuRenApp.Controllers
     [ApiController]
     public class VideoController : ControllerBase
     {
-        private IHostingEnvironment _env;
+        public IVideoService _vs { get; set; }
 
-        public VideoController(IHostingEnvironment env)
+        public VideoController(IVideoService vs)
         {
-            _env = env;
+            _vs = vs;
         }
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using NuRenApp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NuRenApp.Extensions;
 
 namespace NuRenApp
 {
@@ -41,6 +42,8 @@ namespace NuRenApp
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddApplicationServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
