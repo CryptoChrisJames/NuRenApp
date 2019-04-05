@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NuRen.Services.Abstractions;
+using NuRen.Services.Models;
 
 namespace NuRenApp.Controllers
 {
@@ -18,6 +19,13 @@ namespace NuRenApp.Controllers
         public VideoController(IVideoService vs)
         {
             _vs = vs;
+        }
+
+        [HttpPost]
+        [Route("upload")]
+        public async Task<Guid> UploadVideo (IFormFile file)
+        {
+           return await _vs.UploadVideo(file);
         }
     }
 }
