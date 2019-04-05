@@ -260,5 +260,8 @@ paket-files/
 __pycache__/
 *.pyc
 
-#Videos folder needs to be ignored due to large files. 
-videos/
+#Videos folder needs to 
+#be committed but none of it's contents.
+#gitkeep is placed because git cannot commit empty folders. 
+videos/*
+!videos/.gitkeep
