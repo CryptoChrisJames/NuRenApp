@@ -13,7 +13,7 @@ namespace NuRenApp.Extensions
     {
         public static IServiceCollection AddApplicationServices (this IServiceCollection services)
         {
-            services.AddSingleton<IVideoService, VideoService>();
+            services.AddScoped<IVideoService, VideoService>();
             services.AddTransient<IVideoRepository, VideoRepository>();
 
             return services;

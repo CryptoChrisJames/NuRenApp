@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NuRen.Services.Models;
 
-namespace NuRenApp.Data
+namespace NuRen.Services.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
@@ -12,5 +13,7 @@ namespace NuRenApp.Data
             : base(options)
         {
         }
+
+        public DbSet<Video> Videos { get; set; }
     }
 }
