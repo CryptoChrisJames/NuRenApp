@@ -8,6 +8,6 @@ namespace NuRen.Services.Abstractions
 {
     public interface IVideoService
     {
-        Task<Guid> UploadVideo(IFormFile file);
+        Task<Guid> UploadVideo(IFormFile file, string videoTitle);
     }
 }

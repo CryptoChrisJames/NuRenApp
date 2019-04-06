@@ -17,11 +17,12 @@ namespace NuRen.Services.Services
             _vr = vr;
         }
 
-        public async Task<Guid> UploadVideo(IFormFile file)
+        public async Task<Guid> UploadVideo(IFormFile file, string videoTitle)
         {
             var newVideo = new Video()
             {
                 ID = Guid.NewGuid(),
+                Name = videoTitle,
                 FileName = file.FileName,
                 UploadDate = DateTime.Now
             };

@@ -22,10 +22,10 @@ namespace NuRenApp.Controllers
         }
 
         [HttpPost]
-        [Route("upload")]
-        public async Task<Guid> UploadVideo (IFormFile file)
+        [Route("upload/{videoTitle}")]
+        public async Task<Guid> UploadVideo (IFormFile file, string videoTitle)
         {
-           return await _vs.UploadVideo(file);
+           return await _vs.UploadVideo(file, videoTitle);
         }
     }
 }
