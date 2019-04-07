@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NuRenApp.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using NuRen.Services.Data;
+using Amazon.S3;
 
 namespace NuRenApp
 {
@@ -49,6 +50,7 @@ namespace NuRenApp
                 x.MultipartBodyLengthLimit = int.MaxValue;
             });
 
+            services.AddAWSService<IAmazonS3>();
             services.AddApplicationServices();
         }
 

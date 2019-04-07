@@ -1,4 +1,6 @@
 ﻿
+using Amazon.S3;
+using Amazon.S3.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using NuRen.Services.Abstractions;
@@ -17,26 +19,37 @@ namespace NuRen.Services.Repositories
         private IHostingEnvironment _env;
         private ApplicationDbContext _context;
         string _uploadPath { get; set; }
+        private IAmazonS3 _s3;
 
-        public VideoRepository(IHostingEnvironment env, ApplicationDbContext context)
+        public VideoRepository(IHostingEnvironment env, ApplicationDbContext context, IAmazonS3 s3)
         {
             _env = env;
             _uploadPath = Path.Combine(_env.WebRootPath, "videos");
             _context = context;
+            _s3 = s3;
         }
 
         public async Task<Guid> SaveVideo(IFormFile file, Video newVideo)
         {
-            Directory.CreateDirectory(_uploadPath);
-            string filename = file.FileName;
-            var filepath = Path.Combine(_uploadPath, filename);
-            using (FileStream fs = new FileStream(filepath, FileMode.Create))
+            Stream fileStream = file.OpenReadStream();
+            var request = new PutObjectRequest()
             {
-                await file.CopyToAsync(fs);
-            }
-            newVideo.FilePath = filepath;
-            await _context.Videos.AddAsync(newVideo);
-            await _context.SaveChangesAsync();
+                BucketName = "nu-ren-bucket",
+                Key = newVideo.ID.ToString(),
+                InputStream = fileStream,
+                ContentType = file.ContentType
+            };
+            var response = await _s3.PutObjectAsync(request);
+            //Directory.CreateDirectory(_uploadPath);
+            //string filename = file.FileName;
+            //var filepath = Path.Combine(_uploadPath, filename);
+            //using (FileStream fs = new FileStream(filepath, FileMode.Create))
+            //{
+            //    await file.CopyToAsync(fs);
+            //}
+            //newVideo.FilePath = filepath;
+            //await _context.Videos.AddAsync(newVideo);
+            //await _context.SaveChangesAsync();
             return newVideo.ID;
         }
     }
