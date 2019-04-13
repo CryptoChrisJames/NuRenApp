@@ -10,6 +10,7 @@
     <PackageReference Include="AWSSDK.S3" Version="3.3.101.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" />
+    <PackageReference Include="ServiceStack.Redis" Version="5.5.0" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,11 @@
-﻿
-using Amazon.S3;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using NuRen.Services.Abstractions;
 using NuRen.Services.Data;
 using NuRen.Services.Models;
+using ServiceStack.Redis;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,17 +16,15 @@ namespace NuRen.Services.Repositories
 {
     public class VideoRepository : IVideoRepository
     {
-        private IHostingEnvironment _env;
         private ApplicationDbContext _context;
-        string _uploadPath { get; set; }
         private IAmazonS3 _s3;
+        private RedisClient _redisClient;
 
-        public VideoRepository(IHostingEnvironment env, ApplicationDbContext context, IAmazonS3 s3)
+        public VideoRepository(ApplicationDbContext context, IAmazonS3 s3)
         {
-            _env = env;
-            _uploadPath = Path.Combine(_env.WebRootPath, "videos");
             _context = context;
             _s3 = s3;
+            _redisClient = new RedisClient("18.223.213.232", 6379, "OathofObsidian12!");
         }
 
         public async Task<Guid> SaveVideo(IFormFile file, Video newVideo)
@@ -39,17 +37,11 @@ namespace NuRen.Services.Repositories
                 InputStream = fileStream,
                 ContentType = file.ContentType
             };
-            var response = await _s3.PutObjectAsync(request);
-            //Directory.CreateDirectory(_uploadPath);
-            //string filename = file.FileName;
-            //var filepath = Path.Combine(_uploadPath, filename);
-            //using (FileStream fs = new FileStream(filepath, FileMode.Create))
-            //{
-            //    await file.CopyToAsync(fs);
-            //}
-            //newVideo.FilePath = filepath;
-            //await _context.Videos.AddAsync(newVideo);
-            //await _context.SaveChangesAsync();
+            await _s3.PutObjectAsync(request);
+            await _context.Videos.AddAsync(newVideo);
+            await _context.SaveChangesAsync();
+            var Videos = _redisClient.As<Video>();
+            Videos.Store(newVideo);
             return newVideo.ID;
         }
     }

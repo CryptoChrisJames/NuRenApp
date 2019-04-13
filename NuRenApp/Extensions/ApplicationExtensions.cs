@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NuRen.Services.Abstractions;
+using NuRen.Services.Data;
 using NuRen.Services.Repositories;
 using NuRen.Services.Services;
 using System;
@@ -15,6 +16,7 @@ namespace NuRenApp.Extensions
         {
             services.AddScoped<IVideoService, VideoService>();
             services.AddTransient<IVideoRepository, VideoRepository>();
+            services.AddScoped<IVideoCache, VideoCache>();
 
             return services;
         }

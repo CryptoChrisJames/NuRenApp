@@ -11,7 +11,6 @@ namespace NuRen.Services.Models
         public string Name { get; set; }
         public bool FeatureFilm { get; set; }
         public string FileName { get; set; }
-        public string FilePath { get; set; }
         public DateTime UploadDate { get; set; }
     }
 }
